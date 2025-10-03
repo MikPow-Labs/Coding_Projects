@@ -1,5 +1,6 @@
-func guessing_game(random: Int) -> String
-{
+"""
+Written By Daniel Mikula
+"""
     var message = ""
     for i in 1...6
     {
