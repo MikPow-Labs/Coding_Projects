@@ -1,53 +1,34 @@
 import Foundation
 //Calculator for two numbers WIP
-var proceed = 0
-var numb1 = 0.0
-var numb2 = 0.0
-var operation = ""
-func transform(from ASCIIValue: Int) -> Double {
-    return Double(UnicodeScalar(ASCIIValue)!)
-}   
-while proceed == 0{
-    print("Enter your first number: ", terminator: "")
-    numb1 = Double(readLine() ?? "0")!
-    numb1 = transform(numb1)
-    if numb1 < 47{
-        print("Incorrect syntax")
-    }
-    else if numb1 > 57{
-        print("Incorrect syntax")
-    } else {
-        proceed += 1
-    }
-}
-while proceed == 1{
-    print("Enter your second number: ", terminator: "")
-    numb2 = Double(readLine() ?? "0")!
-    numb2 = transform(numb1)
-    if numb2 < 47{
-        print("Incorrect syntax")
-    }
-    else if numb2 > 57{
-        print("Incorrect syntax")
-    } else {
-        proceed += 1
-    }
-}
-while proceed == 2{
-    print("Enter your first number: ", terminator: "")
-    numb1 = Double(readLine() ?? "0")!
-    numb1 = transform(numb1)
-    let allowed: [UInt8] = [42, 43, 45, 47, 94]
-    if let value = numb1, !allowed.contains(value){
-        print("Incorrect syntax")
-    } else {
-        proceed += 1
-    }
-}
-print("What operation do you want (+, /, -, *, ^): ")
-operation = readLine() ?? ""
-var result: Double = 0
 
+func number(prompt: String) -> Double{
+    while true{
+        print(prompt, terminator: "")
+        if let input = readLine(), let number = Double(input) {
+            return(number)
+        } else {
+            print("Please enter a valid number.")
+        }
+    }
+}
+let numb1 = number(prompt: "Enter your first number: ")
+let numb2 = number(prompt: "Enter your second number: ")
+
+func operation_input(prompt: String) -> String{
+    let allowed: [Character] = ["+", "-", "/", "*", "^"]
+    while true{
+        print(prompt, terminator: "")
+        if let input = readLine(), let op = input.first, allowed.contains(op){
+            return (String(op))
+        } else{
+            print("Please enter a valid operator (+, /, -, *, ^).")
+        }
+    }
+}
+
+let operation = operation_input(prompt: "What operation do you want (+, /, -, *, ^): ")
+
+var result: Double = 0
 switch operation{
     case "+":
         result = numb1 + numb2
@@ -60,11 +41,13 @@ switch operation{
             result = numb1 / numb2
         } else {
             print("Cannot divide by zero")
+            exit(1)
         }
 
     case "^":
         result = pow(numb1, numb2)
     default:
-        print("Incorrect syntax")
+        print("Invalid operator")
 }
 print("Result:", result)
+
