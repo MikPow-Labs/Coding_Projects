@@ -1,29 +1,28 @@
 import Foundation
-//Caesar cipher (Work In Progress)
+//Caesar cipher WIP
 
 print("Enter the message you want to encrypt: ")
 let message = readLine() ?? ""
 print("Enter shift value: ")
 let shift = Int(readLine() ?? "0") ?? 0
-let length = message.count
-var new_message = ""
-func caesar_cipher(){
+func caesar_cipher(message: String, shift: Int) -> String{
+    var new_message = ""
+    let new_shift = (shift % 26 + 26) % 26
     for char in message{
-        if 65 <= Character(message[message.index(message.startIndex, offsetBy: number)]).asciiValue && Character(message[message.index(message.startIndex, offsetBy: number)]).asciiValue <= 90{
-            var value = Character(message[number]).asciiValue - 65
-            value = value % 26 + 65
-            new_message.append(Character(UnicodeScalar(value))) 
-        } else if 97 <= Character(message[message.index(message.startIndex, offsetBy: number)]).asciiValue && Character(message[message.index(message.startIndex, offsetBy: number)]).asciiValue <= 122{
-            var value = Character(message[number]).asciiValue - 97
-            value = value % 26 + 97
-            new_message.append(Character(UnicodeScalar(value)))
-        } else {
-            var value = Character(message[number]).asciiValue - 97
-            new_message.append(Character(UnicodeScalar(value)))
+        if let ascii = char.asciiValue{
+            var shifted: UInt8
+            if ascii >= 65 && ascii <= 90{
+                shifted = ((ascii - 65 + UInt8(new_shift)) % 26) + 65
+                new_message.append(Character(UnicodeScalar(shifted))) 
+            } else if ascii >= 97 && ascii <= 122{
+                shifted = ((ascii - 97 + UInt8(new_shift)) % 26) + 97
+                new_message.append(Character(UnicodeScalar(shifted)))
+            } else {
+                new_message.append(char)
+            }
         }
-
     }
     return(new_message)
 }
-caesar_cipher()
-
+let encrypted = caesar_cipher(message: message, shift: shift)
+print("Encrypted message: \(encrypted)")
