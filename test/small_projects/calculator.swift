@@ -7,56 +7,83 @@ enum CalcError: Error{
     case invalidForm(String)
 }
 
-func calculate(array: [String], equation: String) throws -> Double{
+func calculate(_ array: [String], _ equation: String) throws -> Double{
+    var array = array
     if array.count < 3 || array.count % 2 == 0{
         throw CalcError.invalidForm("Equation must be like 5 + 3 * 2")
     }
-    guard var result = Double(array[0]) else {
-        throw CalcError.invalidForm("First value is not a valid number")
-    }
-
-    var index = 1
-
-    while index < array.count {
-        let subject = array[index]
-        guard let next_index = Double(array[index + 1]) else {
-            throw CalcError.invalidOperator("Invalid value \(array[index + 1])")
-        }
-        switch subject{
+    func application(_ first: Double, _ operation: String, _ second: Double) throws -> Double{
+        switch operation{
             case "+":
-                result += next_index
+                return(first + second)
             case "-":
-                result -= next_index
+                return(first - second)
             case "*":
-                result *= next_index
+                return(first * second)
             case "/":
-                if next_index != 0{
-                    result /= next_index
+                if second != 0{
+                    return(first / second)
                 } else {
                     throw CalcError.divideByZero("Cannot divide by zero")
                 }
             case "^":
-                result = pow(result, next_index)
+                return(pow(first, second))
             default:
-                throw CalcError.invalidOperator("Invalid operator \(array[index])")
-        }
-        index += 2
+                throw CalcError.invalidOperator("Invalid operator \(operation)")
+            }
     }
+
+    let precedence: [[String]] = [
+        ["^"],
+        ["*", "/"],
+        ["+", "-"]
+    ]
+
+    for step in precedence{
+        var i = 0
+        while i < array.count{
+            if step.contains(array[i]){
+                guard let first = Double(array[i - 1])
+                else {
+                    throw CalcError.invalidForm("Invalid number near operator \(array[i])")
+                }
+                guard let second = Double(array[i + 1])
+                else{
+                    throw CalcError.invalidForm("Invalid number near operator \(array[i])")
+                }
+                let value = try application(first, array[i], second)
+                array.replaceSubrange((i - 1) ... (i + 1), with: [String(value)])
+                i = 0
+            } else {
+            i += 1
+            }
+        }  
+    }
+    guard let result = Double(array.first ?? "")
+        else{
+            throw CalcError.invalidForm("Could not evaluate expression")
+        }
     return(result)
 }
-
-print("Enter your equation with a space inbetween operators (5 + 3 * 2): ")
-let equation = readLine() ?? ""
-let array: Array = equation.split(separator: " ").map {String($0)}
-
-do{
-    let result = try calculate(array: array, equation: equation)
-    print("Result:", result)
-} catch CalcError.divideByZero(let message){
-    print("Error: \(message)")
-} catch CalcError.invalidForm(let message){
-    print("Error: \(message)")
-} catch CalcError.invalidOperator(let message){
-    print("Invalid operator at", message)
+while true{
+    print("Enter your equation with a spaces (or type 'quit' to exit): ")
+    let equation = readLine() ?? ""
+    if equation.lowercased() == "quit"{
+        print("Goodbye!")
+        break
+    }
+    let array: Array = equation.split(separator: " ").map {String($0)}
+    do{
+        let result = try calculate(array, equation)
+        print(equation, "=", result)
+    } catch CalcError.divideByZero(let message){
+        print("Error: \(message)")
+    } catch CalcError.invalidForm(let message){
+        print("Error: \(message)")
+    } catch CalcError.invalidOperator(let message){
+        print("Invalid operator at", message)
+    } catch {
+        print("Unexpected error: \(error)")
+    }
 }
 
