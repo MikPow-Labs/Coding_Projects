@@ -166,7 +166,7 @@ func quiz() {
     game()
 }
 
-//Banking simulator
+//Banking simulator WIP
 func banking() {
     print("Welcome to Evan's Bank!")
     print("Enter username: ")
