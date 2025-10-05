@@ -9,8 +9,17 @@ enum CalcError: Error{
 
 func calculate(_ array: [String], _ equation: String) throws -> Double{
     var array = array
+    while let openIndex = array.lastIndex(of: "("){
+        guard let closeIndex = array[openIndex...].firstIndex(of: ")")
+        else{
+            throw CalcError.invalidForm("Mismatched parentheses")
+        }
+        let sub_expression = Array(array[(openIndex + 1)..<closeIndex])
+        let sub_value = try calculate(sub_expression, equation)
+        array.replaceSubrange(openIndex...closeIndex, with: [String(sub_value)])
+    }
     if array.count < 3 || array.count % 2 == 0{
-        throw CalcError.invalidForm("Equation must be like 5 + 3 * 2")
+        throw CalcError.invalidForm("Equation must be like ( 5 + 3 ) * 2")
     }
     func application(_ first: Double, _ operation: String, _ second: Double) throws -> Double{
         switch operation{
@@ -43,12 +52,8 @@ func calculate(_ array: [String], _ equation: String) throws -> Double{
         var i = 0
         while i < array.count{
             if step.contains(array[i]){
-                guard let first = Double(array[i - 1])
+                guard let first = Double(array[i - 1]), let second = Double(array[i + 1])
                 else {
-                    throw CalcError.invalidForm("Invalid number near operator \(array[i])")
-                }
-                guard let second = Double(array[i + 1])
-                else{
                     throw CalcError.invalidForm("Invalid number near operator \(array[i])")
                 }
                 let value = try application(first, array[i], second)
