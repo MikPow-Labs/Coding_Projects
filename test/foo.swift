@@ -1,6 +1,10 @@
 """
 Written By Daniel Mikula
 """
+import Foundation
+
+func guessing_game(random: Int) -> String
+{
     var message = ""
     for i in 1...6
     {
@@ -24,13 +28,14 @@ Written By Daniel Mikula
     return "Aw Man! The secret number was " + String(random)
 }
 
+
 func to_do_list() -> String
 {
     var tasks = [String]()
     while true
     {
-    print("Would you like to: 1.Add Tasks 2.Remove Tasks 3.List Tasks")
-    let to_do = Int(readLine() ?? "") ?? 0
+        print("Would you like to: 1.Add Tasks 2.Remove Tasks 3.List Tasks")
+        let to_do = Int(readLine() ?? "") ?? 0
     if to_do == 1
     {
         var add = "y"
@@ -111,6 +116,7 @@ func to_do_list() -> String
     }
     return "End of list"
 }
+
 var random_num = Int.random(in:1...100)
-//print(guessing_game(random: random_num))
+print(guessing_game(random: random_num))
 print(to_do_list())
