@@ -1,41 +1,42 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
 
-int main() {
-    char color[20];
-    char pluralNoun[20];
-    char celebrityF[20];
-    char celebrityL[20];
-
-    printf("Enter a color: ");
-    fgets(color, 20, stdin);
-    color[strcspn(color, "\n")] = 0;
-
-    printf("Enter a plural noun: ");
-    fgets(pluralNoun, 20, stdin);
-    pluralNoun[strcspn(pluralNoun, "\n")] = 0;
-
-    printf("Enter a celebrity first name: ");
-    fgets(celebrityF, 20, stdin);
-    celebrityF[strcspn(celebrityF, "\n")] = 0;
-
-    printf("Enter a celebrity last name: ");
-    fgets(celebrityL, 20, stdin);
-    celebrityL[strcspn(celebrityL, "\n")] = 0;
-
-    printf("Roses are %s\n", color);
-    printf("%s are blue\n", pluralNoun);
-    printf("I love %s %s\n", celebrityF, celebrityL);
-
-    return 0;
+double power(double a, double b){
+    int i;
+    double c;
+    c = a;
+    for (i = 1; i < b; i++) {
+        a *= c;
+    }
+    return(a);
 }
-/*
-int main() {
-    int luckyNumbers[] = {4, 7, 8, 16, 24};
-    luckyNumbers[2] = 200;
-    printf("%d\n", luckyNumbers[2]);
-    return(0);
+
+void main(){
+    double numb1;
+    double numb2;
+    char operator;
+    double result;
+    printf("Input your first number: ");
+    scanf("%lf", &numb1);
+    printf("Input your second number: ");
+    scanf("%lf", &numb2);
+    printf("Enter your operation: ");
+    scanf(" %c", &operator);
+    result = power(numb1, numb2);
+    switch (operator){
+        case '+':
+            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 + numb2);
+            break;
+        case '^':
+            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, result);
+            break;
+        case '*':
+            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 * numb2);
+            break;
+        case '-':
+            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 - numb2);
+            break;
+        case '/':
+            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 - numb2);
+            break;
+    };
 }
-*/
