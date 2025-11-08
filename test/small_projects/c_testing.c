@@ -10,13 +10,17 @@ double power(double a, double b){
     return(a);
 }
 
-void main(){
+int main(){
     double numb1;
     double numb2;
     char operator;
     double result;
     printf("Input your first number: ");
-    scanf("%lf", &numb1);
+    while(scanf("%lf", &numb1)){
+        if (sscanf(input, "%lf", &numb1) == 1){
+            
+        }
+    }
     printf("Input your second number: ");
     scanf("%lf", &numb2);
     printf("Enter your operation: ");
@@ -24,19 +28,23 @@ void main(){
     result = power(numb1, numb2);
     switch (operator){
         case '+':
-            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 + numb2);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 + numb2);
             break;
         case '^':
-            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, result);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, result);
             break;
         case '*':
-            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 * numb2);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 * numb2);
             break;
         case '-':
-            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 - numb2);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 - numb2);
             break;
         case '/':
-            printf("%lf %c %lf = %lf\n", numb1, operator, numb2, numb1 - numb2);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 / numb2);
             break;
-    };
+        default:
+            printf("Unknown operator \"%c\"\n", operator);
+            return(1);
+    }
+    return(0);
 }
