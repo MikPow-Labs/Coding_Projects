@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 int* encrypt(char message[1000]){
     message[strcspn(message, "\n")] = '\0';
     int length = strlen(message);
     static int characters[2000];
     int i;
-    unsigned long long bitLength = length * 8;
+    unsigned long long bitLength = length * 8; 
     for (i = 0; i < length; i ++){
         characters[i] = (unsigned char) message[i];
     }
@@ -20,6 +21,14 @@ int* encrypt(char message[1000]){
     }
     i += 8; 
     characters[i] = -1;
+    for (int j = 0; j < 32; j ++){
+        for (int w = 0; w < 16; w++){
+            uint32_t word = (characters[w*4] << 24) | (characters[w*4+1] << 16) | (characters[w*4+2] << 8) | (characters[w*4+3]);
+            if (w == 0){
+                printf("0x%02x\n", word);
+            }
+        }
+    }
     return characters;
 }
 
