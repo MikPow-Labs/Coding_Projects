@@ -224,7 +224,7 @@ func calculator(){
 
     func calculate(_ array: [String], _ equation: String) throws -> Double{
         var array = array
-        while let openIndex = array.lastIndex(of: "("){
+        while let openI ndex = array.lastIndex(of: "("){
             guard let closeIndex = array[openIndex...].firstIndex(of: ")")
             else{
                 throw CalcError.invalidForm("Mismatched parentheses")

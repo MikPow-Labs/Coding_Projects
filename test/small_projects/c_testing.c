@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 double power(double a, double b){
     int i;
@@ -16,11 +17,7 @@ int main(){
     char operator;
     double result;
     printf("Input your first number: ");
-    while(scanf("%lf", &numb1)){
-        if (sscanf(input, "%lf", &numb1) == 1){
-            
-        }
-    }
+    scanf("%lf", &numb1);
     printf("Input your second number: ");
     scanf("%lf", &numb2);
     printf("Enter your operation: ");
@@ -31,7 +28,7 @@ int main(){
             printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 + numb2);
             break;
         case '^':
-            printf("%g %c %g = %g\n", numb1, operator, numb2, result);
+            printf("%g %c %g = %g\n", numb1, operator, numb2, pow(numb1, numb2));
             break;
         case '*':
             printf("%g %c %g = %g\n", numb1, operator, numb2, numb1 * numb2);
