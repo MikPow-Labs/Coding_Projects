@@ -1,12 +1,22 @@
-// Vignere Cipher, can work on 100 chars w/ spaces as _
+// Vignere Cipher, can work on 1000 chars
 
 #include <stdio.h>
 #include <string.h>
 
-char* encrypt(char message[100], char key[100]) {
+int encrypt(int character, int keyCharacter){
+    int value = character + keyCharacter - 1;
+    return(value);
+}
+
+int decrypt(int character, int keyCharacter){
+    int value = character - keyCharacter + 1;
+    return(value);
+}
+
+char* cipher(char message[1000], char key[1000], int (*operation)(int, int)) {
     int lengthMessage = strlen(message);
     int lengthKey = strlen(key);
-    static char newMessage[100];
+    static char newMessage[1000];
     int k = 0;
     int j = 0;
     int i;
@@ -32,7 +42,7 @@ char* encrypt(char message[100], char key[100]) {
             keyCharacter = keyCharacter - 96;
             j += 1;
         } 
-        value = character + keyCharacter - 1;
+        value = operation(character, keyCharacter);
         while (value > 26){
             value -= 26;
         }
@@ -58,12 +68,28 @@ char* encrypt(char message[100], char key[100]) {
     return(newMessage);
 }
 int main(){
-    char message[100];
-    char key[100];
+    char message[1000];
+    char key[1000];
+    char function;
     printf("What is your message: \n");
-    scanf("%99s", message);
+    fgets(message, sizeof(message), stdin);
+    size_t len = strlen(message);
+    if (len > 0 && message[len-1] == '\n'){
+        message[len-1] = '\0';
+    } 
     printf("What is your key: \n");
-    scanf("%99s", key);
-    char* encrypted = encrypt(message, key);
-    printf("%s\n", encrypted);
+    fgets(key, sizeof(key), stdin);
+    len = strlen(key);
+    if (len > 0 && key[len-1] == '\n'){
+        key[len-1] = '\0';
+    } 
+    printf("Do you want to encrypt(E) or decrypt(D)?\n");
+    scanf(" %c", &function);
+    if (function == 'E'){
+        char* encrypted = cipher(message, key, encrypt);
+        printf("%s\n", encrypted);
+    } else {
+        char* decrypted = cipher(message, key, decrypt);
+        printf("%s\n", decrypted);
+    }
 }
