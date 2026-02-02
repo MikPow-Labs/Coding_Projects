@@ -76,11 +76,10 @@ uint8_t* encrypt(char message[1000]){
 
 int main(){
     char message[1000];
-    int length;
     printf("What is the message you want you encrypt?\n");
     fgets(message, sizeof(message), stdin);
     uint8_t* encrypted = encrypt(message);
-    for (int i = 0; i < length; i++){
+    for (int i = 0; i < 32; i++){
         printf("%02X ", encrypted[i]);
     }
     printf("\n");
